@@ -1,4 +1,4 @@
-#SugarLog Backend Guide
+# SugarLog Backend Guide
 
 SugarLog follows Domain Driven Design (DDD) approach. Each part of the application is split into layers and sub layers. We're using a slightly tweaked version of [Fabian Keller's](https://www.fabian-keller.de/blog/domain-driven-design-with-symfony-a-folder-structure) approach; we don't use CQRS to avoid complexity and verbosity. We also utilize CommandBus to aid in abstraction of logic and ability to keep bounded contexts, and change third party services with ease. Rather than binding a service to a specific domain. 
 
