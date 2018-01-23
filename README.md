@@ -1,5 +1,13 @@
 # SugarLog Backend Guide
 
+## The Project
+
+SugarLog aims to improve how patients log, manage and track their diabetes records, without patient paywalls. SugarLog allows users to create logs wherever they are, analyse their history with graphs, setting up schedules to remind them when to take results or medication. SugarLog also allows users to export their data to their medical team with ease, avoiding scraps of paper, awkward device exports, and forgetting to bring results; it's all done for them! 
+
+In the future, we aim to connect patients and medical professionals closer, making it even easier! 
+
+## Approach
+
 SugarLog follows Domain Driven Design (DDD) approach. Each part of the application is split into layers and sub layers. We're using a slightly tweaked version of [Fabian Keller's](https://www.fabian-keller.de/blog/domain-driven-design-with-symfony-a-folder-structure) approach; we don't use CQRS to avoid complexity and verbosity. We also utilize CommandBus to aid in abstraction of logic and ability to keep bounded contexts, and change third party services with ease. Rather than binding a service to a specific domain. 
 
 Each component is can be defined as a Domain of the application. Such as a User domain, Sales Domain, Order Domain and so forth. Each domain is separated from another; a [bounded context](http://www.informit.com/articles/article.aspx?p=2738465&seqNum=3). For example, in an order, a Customer context doesn't care about the delivery address. It only cares about what is being ordered for what customers. Although, a customer in the delivery context would need to know the customer's name, address, and delivery method. Finally, a billing customer context doesn't care about the delivery method, delivery address or the color of the customer's underwear. It only cares about what is relevant to solve its problem. 
