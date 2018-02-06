@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -19,14 +20,17 @@ class UserRegistrationController extends AbstractController
 {
     protected $logger;
     protected $validator;
+    protected $encoder;
 
     function __construct(
         LoggerInterface $logger,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        UserPasswordEncoderInterface $encoder
     )
     {
         $this->logger = $logger;
         $this->validator = $validator;
+        $this->encoder = $encoder;
     }
 
     /**
@@ -51,7 +55,7 @@ class UserRegistrationController extends AbstractController
 
             $email = $requestJson->email;
             $username = $requestJson->username; // TODO Validate
-            //$password = $requestJson->password; // TODO Salt + Hash
+            $password = $requestJson->password; // TODO Salt + Hash
 
             // Create user // TODO Move to Command / Factory (?)
             $user = new User();
@@ -63,9 +67,13 @@ class UserRegistrationController extends AbstractController
                 $errorsString = (string) $errors;
             }
 
+            // encode password
+            $encodedPassword = $this->encoder->encodePassword($user, $password);
+            // TODO use isPasswordValid() #https://symfony.com/doc/current/security/password_encoding.html
+
             $user->setEmail($email);
             $user->setUsername($username);
-           // $user->setPassword($password); // TODO make method
+            $user->setPassword($encodedPassword);
             $userRepository->save($user);
 
             // return response
@@ -83,5 +91,13 @@ class UserRegistrationController extends AbstractController
      */
     public function admin() {
         return new Response('<html><body>Admin Page!</body></html>');
+    }
+
+    /**
+     * @Route("/test")
+     * @return Response
+     */
+    public function test() {
+        return new Response('<html><body>Test Page!</body></html>');
     }
 }
