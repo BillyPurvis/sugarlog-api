@@ -152,11 +152,12 @@ class User implements UserInterface, \Serializable
      */
     public function serialize()
     {
-        return $this->serialize(array(
+        return serialize(array(
             $this->id,
             $this->username,
             $this->password
-            // No salt required
+            // see section on salt below
+            // $this->salt,
         ));
     }
 
@@ -170,8 +171,10 @@ class User implements UserInterface, \Serializable
         list (
             $this->id,
             $this->username,
-            $this->password
-            ) = $this->unserialize($serialized);
+            $this->password,
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized);
     }
 
     /**

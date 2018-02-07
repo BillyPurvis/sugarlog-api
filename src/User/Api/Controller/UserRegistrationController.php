@@ -95,9 +95,18 @@ class UserRegistrationController extends AbstractController
 
     /**
      * @Route("/test")
-     * @return Response
      */
     public function test() {
-        return new Response('<html><body>Test Page!</body></html>');
+
+        /**
+         * @var User $user
+         */
+        $user = $this->getUser();
+
+        return new JsonResponse([
+            'id'    => $user->getId(),
+            'user'  => $user->getUsername(),
+            'email' => $user->getEmail()
+        ]);
     }
 }
