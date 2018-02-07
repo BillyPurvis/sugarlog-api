@@ -14,7 +14,10 @@ security:
             security: false
         main:
             pattern: ^/
-            http_basic: ~
+            json_login:
+                check_path: /user/login
+                username_path: security.credentials.login
+                password_path: security.credentials.password
             provider: our_db_provider
 
             # activate different ways to authenticate

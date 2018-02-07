@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @Route("/user")
  */
-class UserRegistrationController extends AbstractController
+class UserController extends AbstractController
 {
     protected $logger;
     protected $validator;
@@ -86,18 +86,10 @@ class UserRegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/admin")
-     * @return Response
+     * @Route("/login", name="login")
+     * @param Request $request
      */
-    public function admin() {
-        return new Response('<html><body>Admin Page!</body></html>');
-    }
-
-    /**
-     * @Route("/test")
-     */
-    public function test() {
-
+    public function loginUser(Request $request) {
         /**
          * @var User $user
          */
@@ -109,4 +101,5 @@ class UserRegistrationController extends AbstractController
             'email' => $user->getEmail()
         ]);
     }
+
 }
