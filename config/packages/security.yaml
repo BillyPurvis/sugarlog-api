@@ -5,20 +5,32 @@ security:
             algorithm: bcrypt
 
     providers:
-        our_db_provider:
+        user_provider:
             entity:
                 class: App\Entity\User
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            pattern: ^/
+        login:
+            stateless: true
+            anonymous: true
+            pattern: ^/user/login
             json_login:
                 check_path: /user/login
-                username_path: security.credentials.login
-                password_path: security.credentials.password
-            provider: our_db_provider
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+                #username_path: security.credentials.login
+                #password_path: security.credentials.password
+            provider: user_provider
+        api:
+            pattern: ^/api
+            stateless: true
+            anonymous: false
+            provider: user_provider
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
 
             # activate different ways to authenticate
 

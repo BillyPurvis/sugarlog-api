@@ -13,9 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @Route("/user")
- */
+
 class UserController extends AbstractController
 {
     protected $logger;
@@ -34,7 +32,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/register")
+     * @Route("/user/register")
      * @Method("POST")
      * @return Response
      */
@@ -86,13 +84,19 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/login", name="login")
+     * @Route("/user/login", name="login")
      * @param Request $request
      */
     public function loginUser(Request $request) {
         /**
          * @var User $user
          */
+    }
+
+    /**
+     * @Route("/api/test")
+     */
+    public function test() {
         $user = $this->getUser();
 
         return new JsonResponse([
@@ -101,5 +105,4 @@ class UserController extends AbstractController
             'email' => $user->getEmail()
         ]);
     }
-
 }
