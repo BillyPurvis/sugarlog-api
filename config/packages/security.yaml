@@ -13,7 +13,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         login:
-            stateless: truew
+            stateless: true
             anonymous: true
             pattern: ^/user/login
             json_login:
