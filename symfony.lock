@@ -1,4 +1,7 @@
 {
+    "beberlei/assert": {
+        "version": "v2.9.2"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -101,6 +104,12 @@
             "ref": "aaddfdf43cdecd4cf91f992052d76c2cadc04543"
         }
     },
+    "simple-bus/message-bus": {
+        "version": "v3.0.1"
+    },
+    "simple-bus/symfony-bridge": {
+        "version": "v5.1.2"
+    },
     "symfony/cache": {
         "version": "v4.0.3"
     },
@@ -195,6 +204,9 @@
         "version": "v1.6.0"
     },
     "symfony/property-access": {
+        "version": "v4.0.4"
+    },
+    "symfony/proxy-manager-bridge": {
         "version": "v4.0.4"
     },
     "symfony/routing": {

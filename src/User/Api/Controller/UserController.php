@@ -3,8 +3,10 @@
 namespace App\User\Api\Controller;
 
 use App\Entity\User;
+use App\User\Domain\Command\RegisterUserCommand;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use SimpleBus\SymfonyBridge\Bus\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,16 +21,19 @@ class UserController extends AbstractController
     protected $logger;
     protected $validator;
     protected $encoder;
+    protected $commandBus;
 
     function __construct(
         LoggerInterface $logger,
         ValidatorInterface $validator,
-        UserPasswordEncoderInterface $encoder
+        UserPasswordEncoderInterface $encoder,
+        CommandBus $commandBus
     )
     {
         $this->logger = $logger;
         $this->validator = $validator;
         $this->encoder = $encoder;
+        $this->commandBus = $commandBus;
     }
 
     /**
@@ -44,7 +49,6 @@ class UserController extends AbstractController
         $requestBody = $request->getContent();
 
         $response = new Response();
-
 
         // TODO Make as Command (Bus)
         if (null != $requestBody) {
@@ -74,6 +78,9 @@ class UserController extends AbstractController
             $user->setPassword($encodedPassword);
             $userRepository->save($user);
 
+            // Register User Command Sent
+            $this->commandBus->handle(new RegisterUserCommand());
+
             // return response
             $response->setStatusCode(Response::HTTP_OK);
             return $response->send();
@@ -88,21 +95,6 @@ class UserController extends AbstractController
      * @param Request $request
      */
     public function loginUser(Request $request) {
-        /**
-         * @var User $user
-         */
-    }
-
-    /**
-     * @Route("/api/test")
-     */
-    public function test() {
-        $user = $this->getUser();
-
-        return new JsonResponse([
-            'id'    => $user->getId(),
-            'user'  => $user->getUsername(),
-            'email' => $user->getEmail()
-        ]);
+       // Returns token
     }
 }
