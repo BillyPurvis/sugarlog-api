@@ -1,0 +1,10 @@
+services:
+    register_user_command_handler:
+            class: App\User\Domain\Command\RegisterUserCommandHandler
+            public: true
+            tags:
+                - { name: command_handler, handles: App\User\Domain\Command\RegisterUserCommand }
+            arguments:
+                - "@monolog.logger"
+                - "@app.repository.user_repository"
+                - "@security.user_password_encoder.generic"

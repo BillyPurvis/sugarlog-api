@@ -9,5 +9,40 @@ namespace App\User\Domain\Command;
  */
 class RegisterUserCommand
 {
+    private $email;
+    
+    private $username;
+    
+    private $password;
+    
+    public function __construct($email, $username, $password)
+    {
+        $this->email = $email;
+        $this->username = $username;
+        $this->password = $password;
+    }
 
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
 }
