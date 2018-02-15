@@ -15,24 +15,17 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 /**
  * Class UserRepository
  * @package App\Repository
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table(name="user")
  */
-class UserRepository extends EntityRepository implements UserLoaderInterface
+class UserRepository implements UserLoaderInterface
 {
     /**
      * @var EntityManager|EntityManagerInterface
      */
     private $em;
 
-    /**
-     * UserRepository constructor.
-     * @param EntityManager|EntityManagerInterface $em
-     * @param ORM\ClassMetadata $class
-     */
-    public function __construct($em, ORM\ClassMetadata $class)
+
+    public function __construct($em)
     {
-        parent::__construct($em, $class);
         $this->em = $em;
     }
 
@@ -42,7 +35,9 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
      */
     public function loadUserByUsername($username)
     {
-        return $this->createQueryBuilder('u')
+        return $this->em->createQueryBuilder('u')
+            ->select('u')
+            ->from(User::class, 'u')
             ->where('u.username = :username OR u.email = :email')
             ->setParameter('username', $username)
             ->setParameter('email', $username)
