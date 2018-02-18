@@ -8,3 +8,12 @@ services:
                 - "@monolog.logger"
                 - "@app.repository.user_repository"
                 - "@security.user_password_encoder.generic"
+
+    save_user_login_jwt_command_handler:
+            class: App\User\Domain\Command\SaveUserLoginJWTCommandHandler
+            public: true
+            tags:
+                - { name: command_handler, handles: App\User\Domain\Command\SaveUserLoginJWTCommand }
+            arguments:
+                - "@monolog.logger"
+                - "@app.repository.user_repository"

@@ -45,6 +45,11 @@ class User implements UserInterface, \Serializable
     private $isActive;
 
     /**
+     * @ORM\Column(name="JWTToken", type="text", nullable=true)
+     */
+    private $jwtToken;
+
+    /**
      * @var \datetime $createdAt
      * @ORM\Column(type="datetime")
      */
@@ -124,7 +129,6 @@ class User implements UserInterface, \Serializable
      */
     public function getSalt()
     {
-        // TODO: Implement getSalt() method.
         return null; // We might use if no bycrpt
     }
 
@@ -133,7 +137,6 @@ class User implements UserInterface, \Serializable
      */
     public function getRoles()
     {
-        // TODO: Implement getRoles() method.
         return array('ROLE_USER');
     }
 
@@ -215,6 +218,22 @@ class User implements UserInterface, \Serializable
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @param string $jwtToken
+     */
+    public function setJwtToken($jwtToken)
+    {
+        $this->jwtToken = $jwtToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getJwtToken()
+    {
+        return $this->jwtToken;
     }
 
     /**

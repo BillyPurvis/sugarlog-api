@@ -3,6 +3,7 @@
 namespace App\User\Api\Controller;
 
 use App\User\Domain\Command\RegisterUserCommand;
+use App\User\Domain\Command\SaveUserLoginJWTCommand;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SimpleBus\SymfonyBridge\Bus\CommandBus;
@@ -13,14 +14,39 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-
+/**
+ * Class UserController
+ * @package App\User\Api\Controller
+ */
 class UserController extends AbstractController
 {
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
+
+    /**
+     * @var ValidatorInterface
+     */
     protected $validator;
+
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     protected $encoder;
+
+    /**
+     * @var CommandBus
+     */
     protected $commandBus;
 
+    /**
+     * UserController constructor.
+     * @param LoggerInterface $logger
+     * @param ValidatorInterface $validator
+     * @param UserPasswordEncoderInterface $encoder
+     * @param CommandBus $commandBus
+     */
     function __construct(
         LoggerInterface $logger,
         ValidatorInterface $validator,
