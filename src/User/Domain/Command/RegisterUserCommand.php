@@ -15,10 +15,10 @@ class RegisterUserCommand
     
     private $password;
     
-    public function __construct($email, $username, $password)
+    public function __construct($username, $email, $password)
     {
-        $this->email = $email;
         $this->username = $username;
+        $this->email = $email;
         $this->password = $password;
     }
 

@@ -76,8 +76,8 @@ class UserController extends AbstractController
             $requestJson = \json_decode($requestBody);
 
             $email = $requestJson->email;
-            $username = $requestJson->username; // TODO Validate ? IN CMD
-            $password = $requestJson->password; // TODO Validate ? IN CMD
+            $username = $requestJson->username;
+            $password = $requestJson->password;
 
             // Register User Command Sent
             $this->commandBus->handle(new RegisterUserCommand($username, $email, $password));
