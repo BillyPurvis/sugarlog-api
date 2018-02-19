@@ -33,7 +33,6 @@ class RegisterUserCLICommand extends Command
             ->addArgument('username', InputArgument::REQUIRED, 'User Username')
             ->addArgument('email', InputArgument::REQUIRED, 'User Email')
             ->addArgument('password', InputArgument::REQUIRED, 'User Password');
-
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
