@@ -40,8 +40,8 @@ class RegisterUserCLICommand extends Command
     {
 
         // Format Style
-        $style = new OutputFormatterStyle('green', 'black', array('bold', 'blink'));
-        $output->getFormatter()->setStyle('good', $style);
+        $style = new OutputFormatterStyle('black', 'green');
+        $output->getFormatter()->setStyle('earth', $style);
 
 
         $username = $input->getArgument('username');
@@ -52,8 +52,10 @@ class RegisterUserCLICommand extends Command
         $this->commandBus->handle(new RegisterUserCommand($username, $email, $password));
 
         $output->writeln([
-            'User Successfully Registered',
-            '============================='
+            '<earth>User Successfully Registered',
+            '============================',
+            '                            ',
+            'Username: '. $username . '            </>'
         ]);
 
 
