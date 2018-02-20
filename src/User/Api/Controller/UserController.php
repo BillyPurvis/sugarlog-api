@@ -2,6 +2,7 @@
 
 namespace App\User\Api\Controller;
 
+use App\User\Domain\Command\LogOutUserCommand;
 use App\User\Domain\Command\RegisterUserCommand;
 
 use Psr\Log\LoggerInterface;
@@ -100,6 +101,21 @@ class UserController extends AbstractController implements TokenAuthenticationCo
     }
 
     /**
+     * @Route("/api/logout", name="logout")
+     * @param Request $request
+     */
+    public function logOutUser(Request $request) {
+        // LogOut User
+        $user = $this->getUser();
+
+        $this->commandBus->handle(new LogOutUserCommand($user));
+
+        $response = new Response();
+        $response->setStatusCode(200);
+        $response->setContent('Success');
+    }
+
+    /**
      * @Route("/api/test")
      * @return JsonResponse
      * Test Controller to check auth
@@ -107,6 +123,7 @@ class UserController extends AbstractController implements TokenAuthenticationCo
     public function test(Request $request)
     {
         $user = $this->getUser();
+
 
         return new JsonResponse([
             'id' => $user->getId(),

@@ -9,6 +9,14 @@ services:
                 - "@app.repository.user_repository"
                 - "@security.user_password_encoder.generic"
                 - "@validator"
+    log_out_user_command_handler:
+            class: App\User\Domain\Command\LogOutUserCommandHandler
+            public: true
+            tags:
+                - { name: command_handler, handles: App\User\Domain\Command\LogOutUserCommand }
+            arguments:
+                - "@monolog.logger"
+                - "@app.repository.user_repository"
 
     save_user_login_jwt_command_handler:
             class: App\User\Domain\Command\SaveUserLoginJWTCommandHandler
