@@ -47,6 +47,7 @@ class TokenAuthenticationSubscriber implements EventSubscriberInterface
     public function onKernelController(FilterControllerEvent $event)
     {
         $controller = $event->getController();
+        $tokenHeader = $event->getRequest()->headers->get('authorization');
 
         /*
          * $controller passed can be either a class or a Closure.
@@ -57,26 +58,24 @@ class TokenAuthenticationSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($controller[0] instanceof TokenAuthenticationController) {
-
-            // Get auth token
-            $tokenHeader = $event->getRequest()->headers->get('authorization');
-
-            if (null != $tokenHeader) {
-                $token = preg_replace('/\bBearer\s\b/', '', $tokenHeader);
-                // Attempt to find valid JWT to user
-
-                $user = $this->userRepository->findByToken($token);
-
-                if (!$user instanceof User) {
-                    // JWT Doesn't exist OR invalid
-                    throw new AccessDeniedHttpException('This action needs a valid token');
-                }
-
-                $this->logger->debug('TokenAuthenticationController::JWT FOUND');
-            }
+        if (!($controller[0] instanceof TokenAuthenticationController)) {
+            return;
         }
 
+        // Get auth token
+        if (null === $tokenHeader) {
+            return;
+        }
+
+        $token = preg_replace('/\bBearer\s\b/', '', $tokenHeader);
+
+        // Attempt to find valid JWT to user
+        $user = $this->userRepository->findByToken($token);
+
+        if (!$user instanceof User) {
+            // JWT Doesn't exist OR invalid
+            throw new AccessDeniedHttpException('This action needs a valid token');
+        }
     }
 
     /**
