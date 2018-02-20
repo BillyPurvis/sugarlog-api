@@ -9,7 +9,7 @@ In the future, we aim to connect patients and medical professionals closer, maki
  
 ## Table Of Contents
     
-- [Authentication](docs/AUTHENTICATION.md)
+- [Authentication](AUTHENTICATION.md)
 
 ## Approach
 
