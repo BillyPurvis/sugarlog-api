@@ -4,7 +4,12 @@
 
 SugarLog aims to improve how patients log, manage and track their diabetes records, without patient paywalls. SugarLog allows users to create logs wherever they are, analyse their history with graphs, setting up schedules to remind them when to take results or medication. SugarLog also allows users to export their data to their medical team with ease, avoiding scraps of paper, awkward device exports, and forgetting to bring results; it's all done for them! 
 
-In the future, we aim to connect patients and medical professionals closer, making it even easier! 
+In the future, we aim to connect patients and medical professionals closer, making it even easier!
+ 
+ 
+## Table Of Contents
+    
+- [Authentication](docs/AUTHENTICATION.md)
 
 ## Approach
 
@@ -60,7 +65,6 @@ Hopefully hot patches won't be needed, but pulling from master or develop (or th
 All changes require a PR to develop (not master). 
 
 If I don't get to it, contact me somehow. 
-
 
 
 ## Conclusion
