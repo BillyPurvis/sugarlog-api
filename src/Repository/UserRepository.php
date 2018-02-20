@@ -24,7 +24,7 @@ class UserRepository implements UserLoaderInterface
     private $em;
 
 
-    public function __construct($em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -43,6 +43,16 @@ class UserRepository implements UserLoaderInterface
             ->setParameter('email', $username)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function findByToken($token)
+    {
+        return $this->em->createQueryBuilder()
+            ->select('u')
+            ->from(User::class, 'u')
+            ->where('u.jwtToken = :token')
+            ->setParameter('token', $token)
+            ->getQuery()->getOneOrNullResult();
     }
 
     /**

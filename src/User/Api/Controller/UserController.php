@@ -3,22 +3,22 @@
 namespace App\User\Api\Controller;
 
 use App\User\Domain\Command\RegisterUserCommand;
-use App\User\Domain\Command\SaveUserLoginJWTCommand;
+
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SimpleBus\SymfonyBridge\Bus\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-
 /**
  * Class UserController
  * @package App\User\Api\Controller
  */
-class UserController extends AbstractController
+class UserController extends AbstractController implements TokenAuthenticationController
 {
     /**
      * @var LoggerInterface
@@ -97,5 +97,20 @@ class UserController extends AbstractController
      */
     public function loginUser(Request $request) {
        // Returns token
+    }
+
+    /**
+     * @Route("/api/test")
+     * @return JsonResponse
+     * Test Controller to check auth
+     */
+    public function test(Request $request)
+    {
+        $user = $this->getUser();
+
+        return new JsonResponse([
+            'id' => $user->getId(),
+            'name' => $user->getUsername()
+        ]);
     }
 }
