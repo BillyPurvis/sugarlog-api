@@ -9,26 +9,26 @@ use App\Entity\User;
  */
 class LogOutUserCommand
 {
-    /**
-     * @var User $user
-     */
-    private $user;
 
     /**
-     * LogOutUserCommand constructor.
-     * @param User $user
+     * @var $username
      */
-    public function __construct(User $user)
+    private $username;
+
+    /*
+     * LogOutUserCommand
+     */
+    public function __construct($username)
     {
-        $this->user = $user;
+        $this->username = $username;
     }
 
     /**
      * @return User
      */
-    public function getUser()
+    public function getUsername()
     {
-        return $this->user;
+        return $this->username;
     }
 
 }

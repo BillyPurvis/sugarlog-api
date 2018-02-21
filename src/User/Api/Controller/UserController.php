@@ -2,6 +2,7 @@
 
 namespace App\User\Api\Controller;
 
+use App\Entity\User;
 use App\User\Domain\Command\LogOutUserCommand;
 use App\User\Domain\Command\RegisterUserCommand;
 
@@ -105,14 +106,20 @@ class UserController extends AbstractController implements TokenAuthenticationCo
      * @param Request $request
      */
     public function logOutUser(Request $request) {
-        // LogOut User
-        $user = $this->getUser();
 
-        $this->commandBus->handle(new LogOutUserCommand($user));
+        /**
+         * @var User $user;
+         */
+        $user = $this->getUser();
+        $username = $user->getUsername();
+
+        $this->commandBus->handle(new LogOutUserCommand($username));
 
         $response = new Response();
         $response->setStatusCode(200);
         $response->setContent('Success');
+
+        return $response;
     }
 
     /**

@@ -41,13 +41,17 @@ class LogOutUserCommandHandler
      */
     public function handle(LogOutUserCommand $command)
     {
-        $user = $command->getUser();
+        $username = $command->getUsername();
+
+        $user = $this->userRepository->loadUserByUsername($username);
 
         if (!($user instanceof User)) {
             throw new UsernameNotFoundException();
         }
+
         $user->setJwtToken(null);
         $this->userRepository->save($user);
+
 
         $this->logger->debug('CMD::LogOutUserCommand::User Logged Out', (array)$user);
     }
