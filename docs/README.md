@@ -8,7 +8,7 @@ In the future, we aim to connect patients and medical professionals closer, maki
  
  
 ## Table Of Contents
-    
+- [Getting Started](GETTING-STARTED.md)
 - [Authentication](AUTHENTICATION.md)
 
 ## Approach
