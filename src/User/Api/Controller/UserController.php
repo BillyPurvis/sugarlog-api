@@ -43,6 +43,11 @@ class UserController extends AbstractController implements TokenAuthenticationCo
     protected $commandBus;
 
     /**
+     * @var \Swift_Mailer $mailer
+     */
+    protected $mailer;
+
+    /**
      * UserController constructor.
      * @param LoggerInterface $logger
      * @param ValidatorInterface $validator
@@ -53,13 +58,15 @@ class UserController extends AbstractController implements TokenAuthenticationCo
         LoggerInterface $logger,
         ValidatorInterface $validator,
         UserPasswordEncoderInterface $encoder,
-        CommandBus $commandBus
+        CommandBus $commandBus,
+        \Swift_Mailer $swift_Mailer
     )
     {
         $this->logger = $logger;
         $this->validator = $validator;
         $this->encoder = $encoder;
         $this->commandBus = $commandBus;
+        $this->mailer = $swift_Mailer;
     }
 
     /**
@@ -120,21 +127,5 @@ class UserController extends AbstractController implements TokenAuthenticationCo
         $response->setContent('Success');
 
         return $response;
-    }
-
-    /**
-     * @Route("/api/test")
-     * @return JsonResponse
-     * Test Controller to check auth
-     */
-    public function test(Request $request)
-    {
-        $user = $this->getUser();
-
-
-        return new JsonResponse([
-            'id' => $user->getId(),
-            'name' => $user->getUsername()
-        ]);
     }
 }
