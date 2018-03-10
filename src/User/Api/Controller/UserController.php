@@ -42,10 +42,6 @@ class UserController extends AbstractController implements TokenAuthenticationCo
      */
     protected $commandBus;
 
-    /**
-     * @var \Swift_Mailer $mailer
-     */
-    protected $mailer;
 
     /**
      * UserController constructor.
@@ -58,15 +54,13 @@ class UserController extends AbstractController implements TokenAuthenticationCo
         LoggerInterface $logger,
         ValidatorInterface $validator,
         UserPasswordEncoderInterface $encoder,
-        CommandBus $commandBus,
-        \Swift_Mailer $swift_Mailer
+        CommandBus $commandBus
     )
     {
         $this->logger = $logger;
         $this->validator = $validator;
         $this->encoder = $encoder;
         $this->commandBus = $commandBus;
-        $this->mailer = $swift_Mailer;
     }
 
     /**
