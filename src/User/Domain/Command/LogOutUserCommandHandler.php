@@ -4,7 +4,7 @@ namespace App\User\Domain\Command;
 
 
 use App\Entity\User;
-use App\Repository\UserRepository;
+use App\User\Domain\Repository\UserRepository;
 use Monolog\Logger;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
@@ -43,6 +43,7 @@ class LogOutUserCommandHandler
     {
         $username = $command->getUsername();
 
+        // FIXME See why this happens - still works
         $user = $this->userRepository->loadUserByUsername($username);
 
         if (!($user instanceof User)) {

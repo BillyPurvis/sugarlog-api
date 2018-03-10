@@ -2,7 +2,7 @@
 
 namespace App\User\Domain\Command;
 use App\Entity\User;
-use App\Repository\UserRepository;
+use App\User\Domain\Repository\UserRepository;
 use Monolog\Logger;
 
 /**
@@ -33,7 +33,6 @@ class SaveUserLoginJWTCommandHandler
         if (!$user instanceof User || !$token) {
             return false;
         }
-
 
         $user->setJwtToken($token);
         $this->userRepository->save($user);

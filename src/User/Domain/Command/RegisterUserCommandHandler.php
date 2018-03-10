@@ -4,7 +4,7 @@ namespace App\User\Domain\Command;
 
 
 use App\Entity\User;
-use App\Repository\UserRepository;
+use App\User\Domain\Repository\UserRepository;
 use Monolog\Logger;
 use Symfony\Bundle\MakerBundle\Validator;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;

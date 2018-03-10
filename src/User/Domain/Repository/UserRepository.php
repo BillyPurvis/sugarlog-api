@@ -1,20 +1,16 @@
 <?php
 
-namespace App\Repository;
+namespace App\User\Domain\Repository;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
 /**
  * Class UserRepository
- * @package App\Repository
+ * @package App\User\Domain\Repository
  */
 class UserRepository implements UserLoaderInterface
 {
@@ -32,6 +28,7 @@ class UserRepository implements UserLoaderInterface
     /**
      * @param string $username
      * @return mixed
+     * @throws NonUniqueResultException
      */
     public function loadUserByUsername($username)
     {
@@ -45,6 +42,11 @@ class UserRepository implements UserLoaderInterface
             ->getOneOrNullResult();
     }
 
+    /**
+     * @param $token
+     * @return mixed
+     * @throws NonUniqueResultException
+     */
     public function findByToken($token)
     {
         return $this->em->createQueryBuilder()
@@ -52,6 +54,7 @@ class UserRepository implements UserLoaderInterface
             ->from(User::class, 'u')
             ->where('u.jwtToken = :token')
             ->setParameter('token', $token)
+            ->setMaxResults(1)
             ->getQuery()->getOneOrNullResult();
     }
 

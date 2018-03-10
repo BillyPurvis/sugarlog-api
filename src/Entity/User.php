@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="App\User\Domain\Repository\UserRepository")
  */
 class User implements UserInterface, \Serializable
 {
@@ -45,7 +45,7 @@ class User implements UserInterface, \Serializable
     private $isActive;
 
     /**
-     * @ORM\Column(name="JWTToken", type="text", nullable=true)
+     * @ORM\Column(name="JWTToken", type="text", nullable=true, unique=true)
      */
     private $jwtToken;
 

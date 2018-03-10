@@ -4,12 +4,11 @@ namespace App\User\Infrastructure\EventListener;
 
 
 use App\Entity\User;
-use App\Repository\UserRepository;
+use App\User\Domain\Repository\UserRepository;
 use App\User\Api\Controller\TokenAuthenticationController;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
