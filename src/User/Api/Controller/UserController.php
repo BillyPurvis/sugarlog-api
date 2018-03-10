@@ -5,7 +5,7 @@ namespace App\User\Api\Controller;
 use App\Entity\User;
 use App\User\Domain\Command\LogOutUserCommand;
 use App\User\Domain\Command\RegisterUserCommand;
-
+use App\User\Infrastructure\Service\UserMailerService;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SimpleBus\SymfonyBridge\Bus\CommandBus;
@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 /**
  * Class UserController
  * @package App\User\Api\Controller
@@ -42,6 +43,11 @@ class UserController extends AbstractController implements TokenAuthenticationCo
      */
     protected $commandBus;
 
+    /*
+     * @var UserMailerService
+     */
+    protected $mailer;
+
 
     /**
      * UserController constructor.
@@ -49,18 +55,21 @@ class UserController extends AbstractController implements TokenAuthenticationCo
      * @param ValidatorInterface $validator
      * @param UserPasswordEncoderInterface $encoder
      * @param CommandBus $commandBus
+     * @param UserMailerService $mailerService
      */
     function __construct(
         LoggerInterface $logger,
         ValidatorInterface $validator,
         UserPasswordEncoderInterface $encoder,
-        CommandBus $commandBus
+        CommandBus $commandBus,
+        UserMailerService $mailerService
     )
     {
         $this->logger = $logger;
         $this->validator = $validator;
         $this->encoder = $encoder;
         $this->commandBus = $commandBus;
+        $this->mailer = $mailerService;
     }
 
     /**
@@ -121,5 +130,25 @@ class UserController extends AbstractController implements TokenAuthenticationCo
         $response->setContent('Success');
 
         return $response;
+    }
+
+
+    /**
+     * @Route("mail")
+     * @param Response $response
+     */
+    public function mail(Request $request)
+    {
+        $res = new Response();
+
+        $res->setContent('Test Email');
+
+        $template = $this->renderView('emails/userRegisteredEmail/index.html.twig', array('user' => 'billy'));
+         // Send Welcome Email
+        // TODO Switch to event
+        $this->mailer->sendUserWelcomeEmail($template);
+
+        return $res;
+
     }
 }

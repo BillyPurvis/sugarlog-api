@@ -29,3 +29,6 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    app.service.user_mailer_service:
+        class: App\User\Infrastructure\Service\UserMailerService
+        arguments: ['@mailer']
