@@ -11,6 +11,8 @@ services:
             class: App\User\Domain\Event\UserRegisteredEventHandler
             public: true
             arguments:
+              - "@app.service.user_mailer_service"
+              - "@twig"
               - "@monolog.logger"
             tags:
                 - { name: event_subscriber, subscribes_to: App\User\Domain\Event\UserRegisteredEvent }

@@ -17,19 +17,19 @@ class UserRegisteredEvent
      */
     private $email;
 
-    public function __construct($template, $email)
+    public function __construct($email)
     {
-        $this->template = $template;
+        //$this->template = $template;
         $this->email = $email;
     }
 
     /**
      * @return Template
      */
-    public function getTemplate()
-    {
-        return $this->template;
-    }
+//    public function getTemplate()
+//    {
+//        return $this->template;
+//    }
 
     /**
      * @return string
