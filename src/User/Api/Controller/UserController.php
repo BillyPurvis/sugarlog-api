@@ -5,10 +5,12 @@ namespace App\User\Api\Controller;
 use App\Entity\User;
 use App\User\Domain\Command\LogOutUserCommand;
 use App\User\Domain\Command\RegisterUserCommand;
+use App\User\Domain\Event\UserRegisteredEvent;
 use App\User\Infrastructure\Service\UserMailerService;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SimpleBus\SymfonyBridge\Bus\CommandBus;
+use SimpleBus\SymfonyBridge\Bus\EventBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +45,11 @@ class UserController extends AbstractController implements TokenAuthenticationCo
      */
     protected $commandBus;
 
+    /**
+     * @var EventBus
+     */
+    protected $eventBus;
+
     /*
      * @var UserMailerService
      */
@@ -62,6 +69,7 @@ class UserController extends AbstractController implements TokenAuthenticationCo
         ValidatorInterface $validator,
         UserPasswordEncoderInterface $encoder,
         CommandBus $commandBus,
+        EventBus $eventBus,
         UserMailerService $mailerService
     )
     {
@@ -69,6 +77,7 @@ class UserController extends AbstractController implements TokenAuthenticationCo
         $this->validator = $validator;
         $this->encoder = $encoder;
         $this->commandBus = $commandBus;
+        $this->eventBus = $eventBus;
         $this->mailer = $mailerService;
     }
 
@@ -93,6 +102,12 @@ class UserController extends AbstractController implements TokenAuthenticationCo
 
             // Register User Command Sent
             $this->commandBus->handle(new RegisterUserCommand($username, $email, $password));
+
+            // FIXME Send once command is successful
+            // Send Event Email
+            $template = $this->renderView('emails/userRegisteredEmail/index.html.twig', array('user' => 'billy'));
+            $this->eventBus->handle(new UserRegisteredEvent($template, $email));
+
 
             // return response
             $response->setStatusCode(Response::HTTP_OK);
@@ -142,12 +157,6 @@ class UserController extends AbstractController implements TokenAuthenticationCo
         $res = new Response();
 
         $res->setContent('Test Email');
-
-        $template = $this->renderView('emails/userRegisteredEmail/index.html.twig', array('user' => 'billy'));
-         // Send Welcome Email
-        // TODO Switch to event
-        $this->mailer->sendUserWelcomeEmail($template);
-
         return $res;
 
     }

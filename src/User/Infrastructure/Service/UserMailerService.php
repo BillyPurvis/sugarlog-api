@@ -42,13 +42,13 @@ class UserMailerService
     /**
      * @param User $user
      */
-    public function sendUserWelcomeEmail($template)
+    public function sendUserWelcomeEmail($template, $email)
     {
 
         // TODO Pass User
         $message = (new \Swift_Message('Welcome To SugarLog'))
             ->setFrom('info@sugarlog.co.uk') // FIXME Make config param
-            ->setTo('purvisbilly@outlook.com')
+            ->setTo($email)
             ->setBody($template, 'text/html');
 
             $this->mailer->send($message);

@@ -6,3 +6,11 @@ services:
               - "@monolog.logger"
             tags:
                 - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+
+    event.user_registered_event_subscriber:
+            class: App\User\Domain\Event\UserRegisteredEventHandler
+            public: true
+            arguments:
+              - "@monolog.logger"
+            tags:
+                - { name: event_subscriber, subscribes_to: App\User\Domain\Event\UserRegisteredEvent }
