@@ -68,23 +68,20 @@ class RegisterUserCommandHandler
 
         if (count($errors) > 0) {
             $errorsString = (string) $errors;
+            // FIXME Emit Event if there's any errors and passback to response
         }
 
-        // Validate Password
-        $isPasswordValid = $this->encoder->isPasswordValid($user, $password);
+        // encode password
+        $encodedPassword = $this->encoder->encodePassword($user, $password);
 
-        if (null !== $isPasswordValid) {
-            // encode password
-            $encodedPassword = $this->encoder->encodePassword($user, $password);
+        $user->setEmail($email);
+        $user->setUsername($username);
+        $user->setPassword($encodedPassword);
+        $this->userRepository->save($user);
 
-            $user->setEmail($email);
-            $user->setUsername($username);
-            $user->setPassword($encodedPassword);
-            $this->userRepository->save($user);
+        $this->logger->debug('CMD::RegisterUserCommand::User Created', (array)$user);
 
-            $this->logger->debug('CMD::RegisterUserCommand::User Created', (array)$user);
-        }
-        // FIXME Emit Event if there's any errors and passback to response
+
     }
 
 }

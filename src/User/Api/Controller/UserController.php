@@ -5,7 +5,9 @@ namespace App\User\Api\Controller;
 use App\Entity\User;
 use App\User\Domain\Command\LogOutUserCommand;
 use App\User\Domain\Command\RegisterUserCommand;
+use App\User\Domain\Event\UserPasswordResetEvent;
 use App\User\Domain\Event\UserRegisteredEvent;
+use App\User\Domain\Repository\UserRepository;
 use App\User\Infrastructure\Service\UserMailerService;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -55,6 +57,11 @@ class UserController extends AbstractController implements TokenAuthenticationCo
      */
     protected $mailer;
 
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
 
     /**
      * UserController constructor.
@@ -70,7 +77,8 @@ class UserController extends AbstractController implements TokenAuthenticationCo
         UserPasswordEncoderInterface $encoder,
         CommandBus $commandBus,
         EventBus $eventBus,
-        UserMailerService $mailerService
+        UserMailerService $mailerService,
+        UserRepository $userRepository
     )
     {
         $this->logger = $logger;
@@ -79,6 +87,7 @@ class UserController extends AbstractController implements TokenAuthenticationCo
         $this->commandBus = $commandBus;
         $this->eventBus = $eventBus;
         $this->mailer = $mailerService;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -146,6 +155,50 @@ class UserController extends AbstractController implements TokenAuthenticationCo
         return $response;
     }
 
+    /**
+     * @Route("api/password-change")
+     * @Method("POST")
+     * @param Response $response
+     */
+    public function passwordReset(Request $request)
+    {
+        $user = $this->getUser();
+
+        $requestBody = $request->getContent();
+        $requestJson = \json_decode($requestBody);
+        $password = $requestJson->password;
+        $newPassword = $requestJson->newPassword;
+
+        $res = new Response();
+
+        if (!($user instanceof User)) {
+            return $res->setStatusCode(Response::HTTP_UNAUTHORIZED);
+        }
+
+        if (!$password) {
+            return $res->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $isPasswordValid = $this->encoder->isPasswordValid($user, $password);
+        if(!$isPasswordValid) {
+            return $res->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }
+
+        // TODO Move to command
+        // Reset Password
+        $encodedPassword = $this->encoder->encodePassword($user, $newPassword);
+        $user->setPassword($encodedPassword);
+
+        $this->userRepository->save($user);
+
+        // TODO log user out
+        //$this->commandBus->handle(new LogOutUserCommand($user));
+
+        $this->eventBus->handle(new UserPasswordResetEvent($user->getEmail()));
+
+
+        return $res->setStatusCode(Response::HTTP_OK);
+    }
 
     /**
      * @Route("mail")

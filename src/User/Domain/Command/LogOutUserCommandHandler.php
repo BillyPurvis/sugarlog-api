@@ -53,7 +53,6 @@ class LogOutUserCommandHandler
         $user->setJwtToken(null);
         $this->userRepository->save($user);
 
-
         $this->logger->debug('CMD::LogOutUserCommand::User Logged Out', (array)$user);
     }
 

@@ -52,8 +52,19 @@ class UserMailerService
             ->setBody($template, 'text/html');
 
             $this->mailer->send($message);
+            $this->logger->debug(__METHOD__ . ' was sent');
+    }
 
-            // TODO Add userId
-            $this->logger->info('sendUserWelcomeEmailService Sent::');
+    public function sendUserPasswordWasResetEmail($template, $email)
+    {
+
+        // TODO Pass User
+        $message = (new \Swift_Message('Your SugarLog password has been reset'))
+            ->setFrom('info@sugarlog.co.uk') // FIXME Make config param
+            ->setTo($email)
+            ->setBody($template, 'text/html');
+
+        $this->mailer->send($message);
+        $this->logger->debug(__METHOD__ . ' was sent');
     }
 }
