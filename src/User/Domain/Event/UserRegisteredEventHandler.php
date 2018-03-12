@@ -16,6 +16,9 @@ class UserRegisteredEventHandler
      */
     private $userMailerService;
 
+    /**
+     * @var \Twig_Environment
+     */
     private $template;
     /**
      * @var Logger
@@ -40,10 +43,7 @@ class UserRegisteredEventHandler
      */
     public function notify(UserRegisteredEvent $event)
     {
-
-
-        $template  = $this->template->render('emails/userRegisteredEmail/index.html.twig', array('name' => 'billy'));
+        $template  = $this->template->render('emails/userRegisteredEmail/index.html.twig');
         $this->userMailerService->sendUserWelcomeEmail($template, $event->getEmail());
-
     }
 }

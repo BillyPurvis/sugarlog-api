@@ -8,28 +8,14 @@ use Twig\Template;
 class UserRegisteredEvent
 {
     /**
-     * @var Template
-     */
-    private $template;
-
-    /**
      * @var $email
      */
     private $email;
 
     public function __construct($email)
     {
-        //$this->template = $template;
         $this->email = $email;
     }
-
-    /**
-     * @return Template
-     */
-//    public function getTemplate()
-//    {
-//        return $this->template;
-//    }
 
     /**
      * @return string
