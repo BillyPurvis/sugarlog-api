@@ -103,9 +103,8 @@ class UserController extends AbstractController implements TokenAuthenticationCo
             // Register User Command Sent
             $this->commandBus->handle(new RegisterUserCommand($username, $email, $password));
 
-            // FIXME Send once command is successful
+            // FIXME Use Event Registering and send only if command is successful
             // Send Event Email
-            //$template = $this->renderView('emails/userRegisteredEmail/index.html.twig', array('user' => 'billy'));
             $this->eventBus->handle(new UserRegisteredEvent($email));
 
 
