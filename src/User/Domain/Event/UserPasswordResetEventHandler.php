@@ -3,8 +3,10 @@
 
 namespace App\User\Domain\Event;
 
+use App\User\Domain\Command\LogOutUserCommand;
 use App\User\Infrastructure\Service\UserMailerService;
 use Monolog\Logger;
+use SimpleBus\SymfonyBridge\Bus\CommandBus;
 use Symfony\Component\Debug\Exception\UndefinedMethodException;
 use Twig\Template;
 
@@ -20,6 +22,7 @@ class UserPasswordResetEventHandler
      * @var \Twig_Environment
      */
     private $template;
+
     /**
      * @var Logger
      */
@@ -44,7 +47,10 @@ class UserPasswordResetEventHandler
      */
     public function notify(UserPasswordResetEvent $event)
     {
+        $user = $event->getUser();
+        $email = $user->getEmail();
+
         $template  = $this->template->render('emails/userPasswordWasResetEmail/index.html.twig');
-        $this->userMailerService->sendUserPasswordWasResetEmail($template, $event->getEmail());
+        $this->userMailerService->sendUserPasswordWasResetEmail($template, $email);
     }
 }

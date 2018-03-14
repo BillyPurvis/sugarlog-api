@@ -3,26 +3,26 @@
 
 namespace App\User\Domain\Event;
 
-use Twig\Template;
+use App\Entity\User;
 
 class UserPasswordResetEvent
 {
 
     /**
-     * @var $email
+     * @var $user
      */
-    private $email;
+    private $user;
 
-    public function __construct($email)
+    public function __construct($user)
     {
-        $this->email = $email;
+        $this->user = $user;
     }
 
     /**
-     * @return string
+     * @return User
      */
-    public function getEmail()
+    public function getUser()
     {
-        return $this->email;
+        return $this->user;
     }
 }

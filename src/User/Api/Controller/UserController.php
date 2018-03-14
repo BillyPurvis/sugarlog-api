@@ -181,7 +181,7 @@ class UserController extends AbstractController implements TokenAuthenticationCo
 
         $isPasswordValid = $this->encoder->isPasswordValid($user, $password);
         if(!$isPasswordValid) {
-            return $res->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $res->setStatusCode(Response::HTTP_UNAUTHORIZED);
         }
 
         // TODO Move to command
@@ -194,9 +194,7 @@ class UserController extends AbstractController implements TokenAuthenticationCo
         // TODO log user out
         //$this->commandBus->handle(new LogOutUserCommand($user));
 
-        $this->eventBus->handle(new UserPasswordResetEvent($user->getEmail()));
-
-
+        $this->eventBus->handle(new UserPasswordResetEvent($user));
         return $res->setStatusCode(Response::HTTP_OK);
     }
 
