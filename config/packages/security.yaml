@@ -24,7 +24,7 @@ security:
                 #password_path: security.credentials.password
             provider: user_provider
         api:
-            pattern: ^/api
+            pattern: ^/(api)(?!/password-forgotten)
             stateless: true
             anonymous: false
             provider: user_provider

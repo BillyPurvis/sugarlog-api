@@ -58,6 +58,13 @@ class TokenAuthenticationSubscriber implements EventSubscriberInterface
     {
         $controller = $event->getController();
         $tokenHeader = $event->getRequest()->headers->get('authorization');
+        $requestPath = $event->getRequest()->getPathInfo();
+
+        $isPasswordForgottenRequest = preg_match('/.*(password-forgotten).*/', $requestPath);
+        // Ignore Checks for password Forgotten
+        if ($isPasswordForgottenRequest) {
+            return;
+        }
 
         /*
          * $controller passed can be either a class or a Closure.

@@ -199,6 +199,19 @@ class UserController extends AbstractController implements TokenAuthenticationCo
     }
 
     /**
+     * @Route("api/password-forgotten")
+     * @param Request $request
+     */
+    public function passwordForgotten(Request $request) {
+        $res = new Response();
+
+        $res->setContent('Open');
+
+        return $res;
+
+    }
+
+    /**
      * @Route("mail")
      * @param Response $response
      */
@@ -208,6 +221,5 @@ class UserController extends AbstractController implements TokenAuthenticationCo
 
         $res->setContent('Test Email');
         return $res;
-
     }
 }
