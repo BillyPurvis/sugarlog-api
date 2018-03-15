@@ -107,7 +107,7 @@ class TokenAuthenticationSubscriber implements EventSubscriberInterface
             // Attempt to find valid JWT to user
             $user = $this->userRepository->findByToken($token);
 
-            $isPasswordRoute = preg_match('/(\/password-).*/', $method);
+            $isPasswordRoute = preg_match('/(\/password-reset).*/', $method);
 
             if ($isPasswordRoute && $responseStatus == 200) {
                $this->commandBus->handle(new LogOutUserCommand($user->getUsername()));

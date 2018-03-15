@@ -5,6 +5,7 @@ namespace App\User\Api\Controller;
 use App\Entity\User;
 use App\User\Domain\Command\LogOutUserCommand;
 use App\User\Domain\Command\RegisterUserCommand;
+use App\User\Domain\Event\UserPasswordForgottenRequestEvent;
 use App\User\Domain\Event\UserPasswordResetEvent;
 use App\User\Domain\Event\UserRegisteredEvent;
 use App\User\Domain\Repository\UserRepository;
@@ -156,7 +157,7 @@ class UserController extends AbstractController implements TokenAuthenticationCo
     }
 
     /**
-     * @Route("api/password-change")
+     * @Route("api/password-reset")
      * @Method("POST")
      * @param Response $response
      */
@@ -191,23 +192,46 @@ class UserController extends AbstractController implements TokenAuthenticationCo
 
         $this->userRepository->save($user);
 
-        // TODO log user out
-        //$this->commandBus->handle(new LogOutUserCommand($user));
-
         $this->eventBus->handle(new UserPasswordResetEvent($user));
         return $res->setStatusCode(Response::HTTP_OK);
     }
 
     /**
      * @Route("api/password-forgotten")
+     * @Method("POST")
      * @param Request $request
      */
-    public function passwordForgotten(Request $request) {
+    public function passwordForgotten(Request $request)
+    {
+        $requestBody = $request->getContent();
+        $requestJson = \json_decode($requestBody);
+
+        $email = $requestJson->email;
+        $password = $requestJson->password;
+
+
+        $user = $this->userRepository->loadUserByUsername($email);
+
+        $this->logger->debug("USER", (array)$user);
+        if (null !== $user) {
+            $this->eventBus->handle(new UserPasswordForgottenRequestEvent($user));
+        }
+
+        //TODO Answer Secret Question
+        //TODO Store Attempts (max 5)
+        //TODO Send Password Reset Email
+            //TODO Send link to resetPassword page
+
+        //TODO On Success re-route to /
+        //TODO Find User
+
+
+
         $res = new Response();
 
         $res->setContent('Open');
 
-        return $res;
+            return $res;
 
     }
 

@@ -26,3 +26,13 @@ services:
                   - "@monolog.logger"
                 tags:
                     - { name: event_subscriber, subscribes_to: App\User\Domain\Event\UserPasswordResetEvent }
+
+    event.user_password_forgotten_event_subscriber:
+                    class: App\User\Domain\Event\UserPasswordForgottenRequestEventHandler
+                    public: true
+                    arguments:
+                      - "@app.service.user_mailer_service"
+                      - "@twig"
+                      - "@monolog.logger"
+                    tags:
+                        - { name: event_subscriber, subscribes_to: App\User\Domain\Event\UserPasswordForgottenRequestEvent }

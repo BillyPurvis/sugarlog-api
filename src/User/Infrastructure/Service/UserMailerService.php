@@ -45,7 +45,6 @@ class UserMailerService
     public function sendUserWelcomeEmail($template, $email)
     {
 
-        // TODO Pass User
         $message = (new \Swift_Message('Welcome To SugarLog'))
             ->setFrom('info@sugarlog.co.uk') // FIXME Make config param
             ->setTo($email)
@@ -60,6 +59,17 @@ class UserMailerService
 
         // TODO Pass User
         $message = (new \Swift_Message('Your SugarLog password has been reset'))
+            ->setFrom('info@sugarlog.co.uk') // FIXME Make config param
+            ->setTo($email)
+            ->setBody($template, 'text/html');
+
+        $this->mailer->send($message);
+        $this->logger->debug(__METHOD__ . ' was sent');
+    }
+
+    public function sendUserPasswordForgottenEmail($template, $email)
+    {
+        $message = (new \Swift_Message('SugarLog Forgotten Password'))
             ->setFrom('info@sugarlog.co.uk') // FIXME Make config param
             ->setTo($email)
             ->setBody($template, 'text/html');
