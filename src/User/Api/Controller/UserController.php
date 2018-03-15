@@ -91,7 +91,7 @@ class UserController extends AbstractController implements TokenAuthenticationCo
     }
 
     /**
-     * @Route("/user/register")
+     * @Route("/api/register")
      * @Method("POST")
      * @return Response
      */
@@ -127,7 +127,7 @@ class UserController extends AbstractController implements TokenAuthenticationCo
     }
 
     /**
-     * @Route("/user/login", name="login")
+     * @Route("/api/login", name="login")
      * @param Request $request
      */
     public function loginUser(Request $request) {
