@@ -72,16 +72,16 @@ class TokenAuthenticationSubscriber implements EventSubscriberInterface
          * If it is a class, it comes in array format
          */
         if (!is_array($controller)) {
-            return;
+            throw new AccessDeniedHttpException('This action needs a valid token');
         }
 
         if (!($controller[0] instanceof TokenAuthenticationController)) {
-            return;
+            throw new AccessDeniedHttpException('This action needs a valid token');
         }
 
         // Get auth token
-        if (null === $tokenHeader) {
-            return;
+        if (null == $tokenHeader) {
+            throw new AccessDeniedHttpException('This action needs a valid token');
         }
 
         $token = preg_replace('/\bBearer\s\b/', '', $tokenHeader);
