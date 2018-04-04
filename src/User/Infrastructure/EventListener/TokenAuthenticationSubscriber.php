@@ -79,7 +79,7 @@ class TokenAuthenticationSubscriber implements EventSubscriberInterface
             throw new AccessDeniedHttpException('This action needs a valid token');
         }
 
-        // Get auth token
+        // Check token exists
         if (null == $tokenHeader) {
             throw new AccessDeniedHttpException('This action needs a valid token');
         }
@@ -112,8 +112,6 @@ class TokenAuthenticationSubscriber implements EventSubscriberInterface
             if ($isPasswordRoute && $responseStatus == 200) {
                $this->commandBus->handle(new LogOutUserCommand($user->getUsername()));
             }
-
-
         }
     }
     /**
